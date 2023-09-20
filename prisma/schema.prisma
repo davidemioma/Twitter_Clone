@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+//npm i -D prisma
+//npx prisma init
+//npx prisma generate - Do this after creating a new model
+//npx prisma db push - to push to your database.
+//npx prisma migrate reset - to reset your databse.
+//npx prisma studio - to view your data
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String? 
+  username String? @unique
+  email String? @unique
+  emailVerified DateTime?
+  bio String?
+  image String?
+  coverImage String?
+  profileImage String?
+  hashedPassword String?
+  hasNotification Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  likedPostIds String[] @db.ObjectId
+  likedPosts Post[] @relation("liked", fields: [likedPostIds], references: [id])
+  likedCommentsIds String[] @db.ObjectId
+  likedComments Comment[] @relation("likedComment", fields: [likedCommentsIds], references: [id])
+
+  posts Post[]
+  comments Comment[]
+  notifications Notification[]
+}
+
+model Post{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  body String
+  image String
+  likedIds String[] @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  liked User[] @relation("liked", fields: [likedIds], references: [id])
+
+  comments Comment[]
+}
+
+model Comment{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  postId String @db.ObjectId
+  parentId String? @db.ObjectId
+  body String
+  image String
+  likedIds String[] @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  liked User[] @relation("likedComment", fields: [likedIds], references: [id])
+}
+
+model Notification{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  body String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
