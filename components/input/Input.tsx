@@ -1,3 +1,4 @@
+import { loginData } from "@/lib/validators/login";
 import React from "react";
 import { FieldValues, UseFormRegister, FieldErrors } from "react-hook-form";
 
@@ -7,7 +8,7 @@ interface Props {
   placeholder: string;
   disabled?: boolean;
   required?: boolean;
-  register: UseFormRegister<FieldValues>;
+  register: UseFormRegister<FieldValues | any>;
   errors: FieldErrors;
 }
 
@@ -31,7 +32,11 @@ const Input = ({
         {...register(id, { required })}
       />
 
-      {errors[id] && <p>{errors[id]?.message?.toString()}</p>}
+      {errors[id] && (
+        <p className="text-sm text-red-500">
+          {errors[id]?.message?.toString()}
+        </p>
+      )}
     </div>
   );
 };

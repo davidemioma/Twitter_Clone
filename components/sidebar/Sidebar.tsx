@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { User } from "@prisma/client";
 import SidebarLogo from "./SidebarLogo";
 import SidebarItem from "./SidebarItem";
@@ -12,7 +11,6 @@ import SidebarTweetBtn from "./SidebarTweetBtn";
 import { FaUser, FaRegUser } from "react-icons/fa";
 import { IoMailOutline, IoMailSharp } from "react-icons/io5";
 import { BsHouseFill, BsHouse, BsBell, BsBellFill } from "react-icons/bs";
-import Avatar from "../Avatar";
 
 interface Props {
   currentUser: User | null;
@@ -86,28 +84,9 @@ const Sidebar = ({ currentUser }: Props) => {
             />
           )}
 
-          <SidebarTweetBtn />
+          <SidebarTweetBtn currentUser={currentUser} />
         </div>
       </div>
-
-      {currentUser && (
-        <div className="lg:w-[230px] flex justify-end">
-          <Link href={`/users/${currentUser?.id}`}>
-            <div className="flex items-center gap-3 mb-4 p-4 rounded-full hover:bg-slate-300 cursor-pointer hover:bg-opacity-10 transition">
-              <Avatar
-                userId={currentUser?.id}
-                imageUrl={currentUser?.profileImage}
-              />
-
-              <div className="hidden lg:flex flex-col">
-                <span className="font-medium">{currentUser?.name}</span>
-
-                <span className="text-sm">@{currentUser?.username}</span>
-              </div>
-            </div>
-          </Link>
-        </div>
-      )}
     </div>
   );
 };

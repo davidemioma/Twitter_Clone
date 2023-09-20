@@ -5,6 +5,7 @@ import { User } from "@prisma/client";
 import { BsDot } from "react-icons/bs";
 import { IconType } from "react-icons";
 import { useRouter } from "next/navigation";
+import useLoginModal from "@/hooks/useLoginModal";
 
 interface Props {
   currentUser: User | null;
@@ -31,11 +32,13 @@ const SidebarItem = ({
 }: Props) => {
   const router = useRouter();
 
+  const loginModal = useLoginModal();
+
   const handleClick = useCallback(() => {
     if (onClick) return onClick();
 
     if (auth && !currentUser) {
-      return;
+      loginModal.onOpen();
     } else if (href) {
       router.push(href);
     }

@@ -6,6 +6,7 @@ import Container from "@/components/Container";
 import Sidebar from "@/components/sidebar/Sidebar";
 import { getCurrentUser } from "./actions/getCurrentUser";
 import ModalProvider from "@/components/providers/modal-provider";
+import ToasterProvider from "@/components/providers/toaster-provider";
 
 const font = Nunito_Sans({ subsets: ["latin"] });
 
@@ -25,6 +26,8 @@ export default async function RootLayout({
     <html lang="en">
       <body className={font.className}>
         <ModalProvider />
+
+        <ToasterProvider />
 
         <Container>
           <Sidebar currentUser={currentUser} />

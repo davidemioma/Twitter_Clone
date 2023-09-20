@@ -1,13 +1,20 @@
 import React from "react";
 import { User } from "@prisma/client";
 import { FaFeather } from "react-icons/fa";
+import useLoginModal from "@/hooks/useLoginModal";
 
 interface Props {
   currentUser: User | null;
 }
 
-const SidebarTweetBtn = () => {
-  const onClickHandler = () => {};
+const SidebarTweetBtn = ({ currentUser }: Props) => {
+  const loginModal = useLoginModal();
+
+  const onClickHandler = () => {
+    if (!currentUser) {
+      return loginModal.onOpen();
+    }
+  };
 
   return (
     <div className="cursor-pointer mt-4" onClick={onClickHandler}>
