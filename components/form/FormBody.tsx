@@ -10,15 +10,23 @@ import ImageUpload from "../input/ImageUpload";
 import EmojiPicker from "../input/EmojiPicker";
 import { createPost } from "@/app/actions/createPost";
 import usePostModal from "@/hooks/usePostModal";
+import { createComment } from "@/app/actions/createComment";
 
 interface Props {
+  parentId?: string;
   currentUser: User | null;
   placeholder: string;
   isComment?: boolean;
   postId?: string;
 }
 
-const FormBody = ({ currentUser, placeholder, isComment, postId }: Props) => {
+const FormBody = ({
+  parentId,
+  currentUser,
+  placeholder,
+  isComment,
+  postId,
+}: Props) => {
   const router = useRouter();
 
   const [body, setBody] = useState("");
@@ -43,8 +51,16 @@ const FormBody = ({ currentUser, placeholder, isComment, postId }: Props) => {
     setLoading(true);
 
     try {
-      if (isComment) {
-        return;
+      if (isComment && postId) {
+        await createComment({
+          postId,
+          body,
+          image,
+        });
+
+        toast.success("Comment created");
+
+        resetForm();
       } else {
         await createPost({
           image,

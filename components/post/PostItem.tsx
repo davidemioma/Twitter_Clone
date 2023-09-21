@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { formatTimeToNow } from "@/lib/utils";
 import { AiOutlineMessage, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import useLike from "@/hooks/useLike";
+import useCommentCount from "@/hooks/useCommentCount";
 
 interface Props {
   currentUser: User | null;
@@ -17,6 +18,8 @@ interface Props {
 
 const PostItem = ({ currentUser, post }: Props) => {
   const router = useRouter();
+
+  const { commentCount } = useCommentCount(post.id);
 
   const { hasLiked, likeCount, loading, toggleLike } = useLike({
     post,
@@ -73,7 +76,7 @@ const PostItem = ({ currentUser, post }: Props) => {
         >
           <AiOutlineMessage size={22} />
 
-          <p>{post?.comments?.length}</p>
+          <p>{commentCount}</p>
         </button>
 
         <button
