@@ -1,6 +1,7 @@
 "use server";
 
 import prismadb from "@/lib/prismadb";
+import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/lib/utils";
 
 export const getPosts = async () => {
   try {
@@ -16,6 +17,7 @@ export const getPosts = async () => {
       orderBy: {
         createdAt: "desc",
       },
+      take: INFINITE_SCROLL_PAGINATION_RESULTS,
     });
 
     return posts;

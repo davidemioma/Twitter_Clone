@@ -33,7 +33,7 @@ export default async function Post({ params }: { params: { id: string } }) {
         postId={post.id}
       />
 
-      <CommentFeed currentUser={currentUser} comments={comments} />
+      <CommentFeed currentUser={currentUser} postId={id} comments={comments} />
     </>
   );
 }
