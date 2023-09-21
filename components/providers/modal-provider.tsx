@@ -2,9 +2,15 @@
 
 import React, { useEffect, useState } from "react";
 import Login from "../modal/Login";
+import { User } from "@prisma/client";
 import Register from "../modal/Register";
+import CreatePost from "../modal/CreatePost";
 
-const ModalProvider = () => {
+interface Props {
+  currentUser: User | null;
+}
+
+const ModalProvider = ({ currentUser }: Props) => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -18,6 +24,8 @@ const ModalProvider = () => {
       <Login />
 
       <Register />
+
+      <CreatePost currentUser={currentUser} />
     </>
   );
 };

@@ -2,6 +2,7 @@ import React from "react";
 import { User } from "@prisma/client";
 import { FaFeather } from "react-icons/fa";
 import useLoginModal from "@/hooks/useLoginModal";
+import usePostModal from "@/hooks/usePostModal";
 
 interface Props {
   currentUser: User | null;
@@ -10,10 +11,14 @@ interface Props {
 const SidebarTweetBtn = ({ currentUser }: Props) => {
   const loginModal = useLoginModal();
 
+  const postModal = usePostModal();
+
   const onClickHandler = () => {
     if (!currentUser) {
       return loginModal.onOpen();
     }
+
+    postModal.onOpen();
   };
 
   return (

@@ -5,11 +5,11 @@ import { AiOutlineClose } from "react-icons/ai";
 interface Props {
   isOpen?: boolean;
   onClose: () => void;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   title?: string;
   body?: React.ReactNode;
   footer?: React.ReactNode;
-  actionLabel: string;
+  actionLabel?: string;
   disabled?: boolean;
 }
 
@@ -42,7 +42,9 @@ const Modal = ({
   const handleSubmit = useCallback(() => {
     if (disabled) return;
 
-    onSubmit();
+    if (onSubmit) {
+      onSubmit();
+    }
   }, [disabled, onSubmit]);
 
   if (!isOpen) return null;
@@ -78,14 +80,16 @@ const Modal = ({
             <div className="relative p-10">{body}</div>
 
             <div className="flex flex-col gap-2 p-10">
-              <Button
-                label={actionLabel}
-                disabled={disabled}
-                onClick={handleSubmit}
-                secondary
-                fullWidth
-                large
-              />
+              {onSubmit && actionLabel && (
+                <Button
+                  label={actionLabel}
+                  disabled={disabled}
+                  onClick={handleSubmit}
+                  secondary
+                  fullWidth
+                  large
+                />
+              )}
 
               {footer}
             </div>

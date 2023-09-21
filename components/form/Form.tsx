@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import Button from "./Button";
+import Button from "../Button";
 import { User } from "@prisma/client";
 import useLoginModal from "@/hooks/useLoginModal";
 import useRegisterModal from "@/hooks/useRegisterModal";
+import FormBody from "./FormBody";
 
 interface Props {
   currentUser: User | null;
@@ -21,7 +22,12 @@ const Form = ({ currentUser, placeholder, isComment, postId }: Props) => {
   return (
     <div className="px-5 py-2 border-b border-neutral-800">
       {currentUser ? (
-        <div></div>
+        <FormBody
+          currentUser={currentUser}
+          postId={postId}
+          placeholder={placeholder}
+          isComment={isComment}
+        />
       ) : (
         <div className="py-8">
           <h2 className="text-center font-bold text-xl md:text-2xl mb-3">
