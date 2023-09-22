@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Edit from "../modal/Edit";
 import Login from "../modal/Login";
 import { User } from "@prisma/client";
 import Register from "../modal/Register";
@@ -24,6 +25,8 @@ const ModalProvider = ({ currentUser }: Props) => {
       <Login />
 
       <Register />
+
+      <Edit currentUser={currentUser} />
 
       <CreatePost currentUser={currentUser} />
     </>

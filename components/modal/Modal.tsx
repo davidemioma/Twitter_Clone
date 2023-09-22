@@ -66,20 +66,20 @@ const Modal = ({
           `}
         >
           <div className="w-full h-full flex flex-col">
-            <div className="flex items-center justify-between p-10">
+            <div className="flex items-center justify-between p-7">
               <h3 className="text-xl font-semibold">{title}</h3>
 
               <button
-                className="p-1 ml-auto border-0  text-white hover:opacity-70 transition"
+                className="p-1 ml-auto border-0 text-white hover:opacity-70 transition"
                 onClick={handleClose}
               >
                 <AiOutlineClose size={20} />
               </button>
             </div>
 
-            <div className="relative p-10">{body}</div>
+            <div className="relative p-7">{body}</div>
 
-            <div className="flex flex-col gap-2 p-10">
+            <div className="flex flex-col gap-2 p-7">
               {onSubmit && actionLabel && (
                 <Button
                   label={actionLabel}
