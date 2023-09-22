@@ -4,7 +4,7 @@ import { User } from "@prisma/client";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import useLoginModal from "./useLoginModal";
-import { likePost, removeLike } from "@/app/actions/LikePost";
+import { likePost } from "@/app/actions/LikePost";
 
 interface Props {
   currentUser: User | null;
@@ -18,21 +18,25 @@ const useLike = ({ currentUser, post }: Props) => {
 
   const [loading, setLoading] = useState(false);
 
+  const [likeCount, setLikeCount] = useState(post.likedIds.length);
+
   const [hasLiked, setHasLiked] = useState(
-    post.likedIds.includes(currentUser?.id!)
+    currentUser?.likedPostIds.findIndex((id) => id === post.id) !== -1
   );
 
-  const [likeCount, setLikeCount] = useState(post.likedIds.length);
+  useEffect(() => {
+    if (!post) return;
+
+    setLikeCount(post.likedIds.length);
+  }, [post]);
 
   useEffect(() => {
     if (!currentUser) return;
 
-    setHasLiked(post?.likedIds?.includes(currentUser.id));
+    setHasLiked(
+      currentUser.likedPostIds.findIndex((id) => id === post.id) !== -1
+    );
   }, [post, currentUser]);
-
-  useEffect(() => {
-    setLikeCount(post?.likedIds?.length);
-  }, [post]);
 
   const toggleLike = async () => {
     if (!currentUser) {
@@ -42,23 +46,13 @@ const useLike = ({ currentUser, post }: Props) => {
     setLoading(true);
 
     try {
-      if (hasLiked) {
-        setHasLiked(false);
+      setHasLiked((prev) => !prev);
 
-        setLikeCount((prev) => prev - 1);
+      setLikeCount((prev) => (hasLiked ? prev - 1 : prev + 1));
 
-        await removeLike({ postId: post.id });
+      await likePost({ postId: post.id, hasLiked });
 
-        router.refresh();
-      } else {
-        setHasLiked(true);
-
-        setLikeCount((prev) => prev + 1);
-
-        await likePost({ postId: post.id });
-
-        router.refresh();
-      }
+      router.refresh();
     } catch (err) {
       setHasLiked(false);
 

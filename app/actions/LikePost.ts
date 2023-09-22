@@ -5,9 +5,10 @@ import { getCurrentUser } from "./getCurrentUser";
 
 interface Props {
   postId: string;
+  hasLiked: boolean;
 }
 
-export const likePost = async ({ postId }: Props) => {
+export const likePost = async ({ postId, hasLiked }: Props) => {
   try {
     const currentUser = await getCurrentUser();
 
@@ -29,58 +30,36 @@ export const likePost = async ({ postId }: Props) => {
       throw new Error("Post does not exists");
     }
 
-    await prismadb.post.update({
-      where: {
-        id: postId,
-      },
-      data: {
-        liked: {
-          connect: {
-            id: currentUser.id,
+    if (hasLiked) {
+      await prismadb.post.update({
+        where: {
+          id: postId,
+        },
+        data: {
+          liked: {
+            disconnect: {
+              id: currentUser.id,
+            },
           },
         },
-      },
-    });
-  } catch (err: any) {
-    throw new Error(`Failed to like post: ${err.message}`);
-  }
-};
-
-export const removeLike = async ({ postId }: Props) => {
-  try {
-    const currentUser = await getCurrentUser();
-
-    if (!currentUser) {
-      throw new Error("Unauthorized");
-    }
-
-    if (!postId) {
-      throw new Error("Post ID is required");
-    }
-
-    const postExists = await prismadb.post.findUnique({
-      where: {
-        id: postId,
-      },
-    });
-
-    if (!postExists) {
-      throw new Error("Post does not exists");
-    }
-
-    await prismadb.post.update({
-      where: {
-        id: postId,
-      },
-      data: {
-        liked: {
-          disconnect: {
-            id: currentUser.id,
+      });
+    } else {
+      await prismadb.post.update({
+        where: {
+          id: postId,
+        },
+        data: {
+          liked: {
+            connect: {
+              id: currentUser.id,
+            },
           },
         },
-      },
-    });
+      });
+    }
   } catch (err: any) {
-    throw new Error(`Failed to remove like post: ${err.message}`);
+    throw new Error(
+      `Failed to ${hasLiked ? "remove like" : "like"} post: ${err.message}`
+    );
   }
 };

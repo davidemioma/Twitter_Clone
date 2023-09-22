@@ -21,7 +21,7 @@ export default async function Post({ params }: { params: { id: string } }) {
   }
 
   return (
-    <>
+    <div className="h-screen overflow-y-auto scrollbar-hide">
       <Header label="Tweet" showBackArrow />
 
       <PostItem currentUser={currentUser} post={post} />
@@ -33,7 +33,11 @@ export default async function Post({ params }: { params: { id: string } }) {
         postId={post.id}
       />
 
-      <CommentFeed currentUser={currentUser} postId={id} comments={comments} />
-    </>
+      <CommentFeed
+        currentUser={currentUser}
+        postId={id}
+        initialComments={comments}
+      />
+    </div>
   );
 }

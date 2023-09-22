@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useRef } from "react";
-import { PostProps } from "@/types";
 import { useIntersection } from "@mantine/hooks";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
@@ -23,7 +22,7 @@ const useUnlimitedScrolling = ({ key, query, initialData }: Props) => {
     async ({ pageParam = 1 }) => {
       const { data } = await axios.get(`${query}&page=${pageParam}`);
 
-      return data as PostProps[];
+      return data;
     },
     {
       getNextPageParam: (_, pages) => {

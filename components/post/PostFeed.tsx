@@ -11,19 +11,20 @@ import useUnlimitedScrolling from "@/hooks/useUnlimitedScrolling";
 
 interface Props {
   currentUser: User | null;
-  posts: PostProps[];
+  initialPosts: PostProps[];
 }
 
-const PostFeed = ({ posts, currentUser }: Props) => {
+const PostFeed = ({ initialPosts, currentUser }: Props) => {
   const { ref, entry, data, fetchNextPage, isFetchingNextPage } =
     useUnlimitedScrolling({
-      key: "infinite-post-feed",
+      key: "post-feed",
       query: `/api/posts?limit=${INFINITE_SCROLL_PAGINATION_RESULTS}`,
-      initialData: posts,
+      initialData: initialPosts,
     });
 
   //@ts-ignore
-  const newPosts: PostProps[] = data?.pages?.flatMap((page) => page) ?? posts;
+  const posts: PostProps[] =
+    data?.pages?.flatMap((page) => page) ?? initialPosts;
 
   useEffect(() => {
     if (entry?.isIntersecting) {
@@ -31,17 +32,17 @@ const PostFeed = ({ posts, currentUser }: Props) => {
     }
   }, [entry, fetchNextPage]);
 
-  if (newPosts.length === 0) {
+  if (posts?.length === 0) {
     return <EmptyState label="No posts available" />;
   }
 
   return (
     <>
       <>
-        {newPosts.map((post, i) => {
-          if (i === newPosts.length - 1) {
+        {posts?.map((post, i) => {
+          if (i === posts.length - 1) {
             return (
-              <div ref={ref} key={post.id}>
+              <div key={post.id} ref={ref}>
                 <PostItem currentUser={currentUser} post={post} />
               </div>
             );

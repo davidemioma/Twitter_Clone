@@ -25,11 +25,11 @@ export async function GET(request: Request) {
       include: {
         user: true,
       },
-      take: parseInt(limit),
-      skip: (parseInt(page) - 1) * parseInt(limit),
       orderBy: {
         createdAt: "desc",
       },
+      take: parseInt(limit),
+      skip: (parseInt(page) - 1) * parseInt(limit),
     });
 
     return NextResponse.json(posts);

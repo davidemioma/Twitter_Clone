@@ -15,7 +15,7 @@ export default async function Home() {
 
       <Form currentUser={currentUser} placeholder="What's happening?" />
 
-      <PostFeed currentUser={currentUser} posts={posts} />
+      <PostFeed currentUser={currentUser} initialPosts={posts} />
     </div>
   );
 }

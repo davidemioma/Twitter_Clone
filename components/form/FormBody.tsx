@@ -5,7 +5,6 @@ import Avatar from "../Avatar";
 import Button from "../Button";
 import { User } from "@prisma/client";
 import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import ImageUpload from "../input/ImageUpload";
 import EmojiPicker from "../input/EmojiPicker";
 import { createPost } from "@/app/actions/createPost";
@@ -13,22 +12,13 @@ import usePostModal from "@/hooks/usePostModal";
 import { createComment } from "@/app/actions/createComment";
 
 interface Props {
-  parentId?: string;
   currentUser: User | null;
   placeholder: string;
   isComment?: boolean;
   postId?: string;
 }
 
-const FormBody = ({
-  parentId,
-  currentUser,
-  placeholder,
-  isComment,
-  postId,
-}: Props) => {
-  const router = useRouter();
-
+const FormBody = ({ currentUser, placeholder, isComment, postId }: Props) => {
   const [body, setBody] = useState("");
 
   const [image, setImage] = useState("");
@@ -38,8 +28,6 @@ const FormBody = ({
   const postModal = usePostModal();
 
   const resetForm = () => {
-    router.refresh();
-
     setBody("");
 
     setImage("");
@@ -59,8 +47,6 @@ const FormBody = ({
         });
 
         toast.success("Comment created");
-
-        resetForm();
       } else {
         await createPost({
           image,
@@ -68,9 +54,11 @@ const FormBody = ({
         });
 
         toast.success("Tweet created");
-
-        resetForm();
       }
+
+      resetForm();
+
+      window.location.reload();
     } catch (err) {
       toast.error("Something went wrong. Try again!");
     } finally {

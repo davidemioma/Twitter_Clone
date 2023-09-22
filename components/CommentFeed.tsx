@@ -11,20 +11,20 @@ import useUnlimitedScrolling from "@/hooks/useUnlimitedScrolling";
 interface Props {
   currentUser: User | null;
   postId: string;
-  comments: PostProps[];
+  initialComments: PostProps[];
 }
 
-const CommentFeed = ({ currentUser, postId, comments }: Props) => {
+const CommentFeed = ({ currentUser, postId, initialComments }: Props) => {
   const { ref, entry, data, fetchNextPage, isFetchingNextPage } =
     useUnlimitedScrolling({
-      key: "infinite-comments-feed",
+      key: "comments-feed",
       query: `/api/comments?postId=${postId}&limit=${INFINITE_SCROLL_PAGINATION_RESULTS}`,
-      initialData: comments,
+      initialData: initialComments,
     });
 
   //@ts-ignore
-  const newComments: PostProps[] =
-    data?.pages?.flatMap((page) => page) ?? comments;
+  const comments: PostProps[] =
+    data?.pages?.flatMap((page) => page) ?? initialComments;
 
   useEffect(() => {
     if (entry?.isIntersecting) {
@@ -35,10 +35,10 @@ const CommentFeed = ({ currentUser, postId, comments }: Props) => {
   return (
     <>
       <>
-        {newComments.map((comment, i) => {
-          if (i === newComments.length - 1) {
+        {comments?.map((comment, i) => {
+          if (i === comments.length - 1) {
             return (
-              <div ref={ref} key={comment.id}>
+              <div key={comment.id} ref={ref}>
                 <PostItem currentUser={currentUser} post={comment} />
               </div>
             );
