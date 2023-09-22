@@ -2,6 +2,7 @@
 
 import prismadb from "@/lib/prismadb";
 import { getCurrentUser } from "./getCurrentUser";
+import { pusherServer } from "@/lib/pusher";
 
 interface Props {
   postId: string;
@@ -23,6 +24,9 @@ export const likePost = async ({ postId, hasLiked }: Props) => {
     const postExists = await prismadb.post.findUnique({
       where: {
         id: postId,
+      },
+      include: {
+        user: true,
       },
     });
 
@@ -56,6 +60,36 @@ export const likePost = async ({ postId, hasLiked }: Props) => {
           },
         },
       });
+
+      if (postExists.user.email && currentUser.id !== postExists.user.id) {
+        const notification = await prismadb.notification.create({
+          data: {
+            userId: postExists.user.id,
+            body: `${currentUser.name} liked your tweet`,
+          },
+        });
+
+        await prismadb.user.update({
+          where: {
+            id: postExists.user.id,
+          },
+          data: {
+            hasNotification: true,
+          },
+        });
+
+        await pusherServer.trigger(
+          postExists.user.email,
+          "notification:new",
+          notification
+        );
+
+        await pusherServer.trigger(
+          postExists.user.email,
+          "notification:on",
+          true
+        );
+      }
     }
   } catch (err: any) {
     throw new Error(

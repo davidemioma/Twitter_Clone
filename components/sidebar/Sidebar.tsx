@@ -1,11 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { User } from "@prisma/client";
 import SidebarLogo from "./SidebarLogo";
 import SidebarItem from "./SidebarItem";
 import { BiLogOut } from "react-icons/bi";
 import { signOut } from "next-auth/react";
+import { pusherClient } from "@/lib/pusher";
 import { usePathname } from "next/navigation";
 import SidebarTweetBtn from "./SidebarTweetBtn";
 import { FaUser, FaRegUser } from "react-icons/fa";
@@ -18,6 +19,38 @@ interface Props {
 
 const Sidebar = ({ currentUser }: Props) => {
   const pathname = usePathname();
+
+  const [hasNotification, setHasNotification] = useState(
+    currentUser?.hasNotification
+  );
+
+  const pusherKey = useMemo(() => currentUser?.email, [currentUser?.email]);
+
+  useEffect(() => {
+    if (!pusherKey) return;
+
+    pusherClient.subscribe(pusherKey);
+
+    const turnOnHandler = (hasNotification: boolean) => {
+      setHasNotification(hasNotification);
+    };
+
+    const turnOffHandler = (hasNotification: boolean) => {
+      setHasNotification(hasNotification);
+    };
+
+    pusherClient.bind("notification:on", turnOnHandler);
+
+    pusherClient.bind("notification:off", turnOffHandler);
+
+    return () => {
+      pusherClient.unsubscribe(pusherKey);
+
+      pusherClient.unbind("notification:on", turnOnHandler);
+
+      pusherClient.unbind("notification:off", turnOffHandler);
+    };
+  }, [pusherKey]);
 
   const items = [
     {
@@ -33,7 +66,7 @@ const Sidebar = ({ currentUser }: Props) => {
       label: "Notifications",
       href: "/notifications",
       auth: true,
-      alert: currentUser?.hasNotification,
+      alert: hasNotification,
       active: pathname === "/notifications",
     },
     {

@@ -66,7 +66,7 @@ const PostItem = ({ currentUser, post }: Props) => {
         </div>
       </Link>
 
-      <PostBtns currentUser={currentUser} post={post} />
+      {currentUser && <PostBtns currentUser={currentUser} post={post} />}
     </div>
   );
 };
