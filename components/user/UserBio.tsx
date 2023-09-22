@@ -27,7 +27,7 @@ const UserBio = ({ currentUser, profileUser }: Props) => {
                 onClick={() => editModal.onOpen()}
               />
             ) : (
-              <Button label="Follow" onClick={() => {}} />
+              <Button label="Follow" secondary onClick={() => {}} />
             )}
           </>
         ) : (

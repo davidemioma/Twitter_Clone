@@ -72,3 +72,23 @@ export const numberFormatter = (num: number) => {
 
   return newNumber;
 };
+
+export const getRandomUsers = (users: any[], numOfUsers: number) => {
+  if (numOfUsers > users.length) {
+    return users.slice(0, users.length);
+  }
+
+  const randomUsers = [];
+
+  const usersCopy = [...users];
+
+  while (randomUsers.length < numOfUsers) {
+    const randomIndex = Math.floor(Math.random() * usersCopy.length);
+
+    const randomUser = usersCopy.splice(randomIndex, 1)[0];
+
+    randomUsers.push(randomUser);
+  }
+
+  return randomUsers;
+};

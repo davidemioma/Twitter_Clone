@@ -8,6 +8,7 @@ import { getCurrentUser } from "./actions/getCurrentUser";
 import ModalProvider from "@/components/providers/modal-provider";
 import QueryProvider from "@/components/providers/query-provider";
 import ToasterProvider from "@/components/providers/toaster-provider";
+import { getSuggestions } from "./actions/getSuggestions";
 
 const font = Nunito_Sans({ subsets: ["latin"] });
 
@@ -22,6 +23,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const currentUser = await getCurrentUser();
+
+  const suggestions = await getSuggestions(10);
 
   return (
     <html lang="en">
@@ -38,7 +41,7 @@ export default async function RootLayout({
               {children}
             </div>
 
-            <Widgets />
+            <Widgets currentUser={currentUser} suggestions={suggestions} />
           </Container>
         </QueryProvider>
       </body>
