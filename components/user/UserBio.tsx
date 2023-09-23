@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import Button from "../Button";
 import { User } from "@prisma/client";
 import useFollow from "@/hooks/useFollow";
@@ -98,17 +99,21 @@ const UserBio = ({ currentUser, profileUser }: Props) => {
         </div>
 
         <div className="flex items-center gap-6 mt-2">
-          <div className="flex items-center gap-1 text-sm">
-            <p>{numberFormatter(profileUser?.followingsIds?.length || 0)}</p>
+          <Link href={`/users/${profileUser?.id}/followings`}>
+            <div className="flex items-center gap-1 text-sm">
+              <p>{numberFormatter(profileUser?.followingsIds?.length || 0)}</p>
 
-            <p className="text-neutral-500">Following</p>
-          </div>
+              <p className="text-neutral-500">Following</p>
+            </div>
+          </Link>
 
-          <div className="flex items-center gap-1 text-sm">
-            <p>{numberFormatter(followersCount || 0)}</p>
+          <Link href={`/users/${profileUser?.id}/followers`}>
+            <div className="flex items-center gap-1 text-sm">
+              <p>{numberFormatter(followersCount || 0)}</p>
 
-            <p className="text-neutral-500">Followers</p>
-          </div>
+              <p className="text-neutral-500">Followers</p>
+            </div>
+          </Link>
         </div>
       </div>
     </div>

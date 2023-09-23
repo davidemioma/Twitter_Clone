@@ -126,16 +126,16 @@ const Edit = ({ currentUser }: Props) => {
 
       <ImageUpload
         label="Upload profile image"
-        value={coverImage}
-        disabled={loading}
-        onChange={(image) => setCoverImage(image)}
-      />
-
-      <ImageUpload
-        label="Upload profile image"
         value={profileImage}
         disabled={loading}
         onChange={(image) => setProfileImage(image)}
+      />
+
+      <ImageUpload
+        label="Upload cover image"
+        value={coverImage}
+        disabled={loading}
+        onChange={(image) => setCoverImage(image)}
       />
     </div>
   );
