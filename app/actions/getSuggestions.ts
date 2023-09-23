@@ -8,10 +8,16 @@ export const getSuggestions = async (amount: number) => {
   try {
     const currentUser = await getCurrentUser();
 
+    let exemptions: string[] = [];
+
+    if (currentUser) {
+      exemptions = [currentUser?.id, ...(currentUser?.followingsIds || [])];
+    }
+
     const users = await prismadb.user.findMany({
       where: {
         id: {
-          not: currentUser?.id,
+          notIn: [...exemptions],
         },
       },
       orderBy: {

@@ -1,7 +1,8 @@
 import Header from "@/components/Header";
 import UserBio from "@/components/user/UserBio";
 import UserHero from "@/components/user/UserHero";
-import PostFeed from "@/components/post/PostFeed";
+import PostItem from "@/components/post/PostItem";
+import EmptyState from "@/components/EmptyState";
 import { getCurrentUser } from "@/app/actions/getCurrentUser";
 import { getProfileUser } from "@/app/actions/getProfileUser";
 import { getPostsByUserId } from "@/app/actions/getPostsByUserId";
@@ -23,7 +24,15 @@ export default async function User({ params }: { params: { id: string } }) {
 
       <UserBio currentUser={currentUser} profileUser={profileUser} />
 
-      <PostFeed currentUser={currentUser} initialPosts={posts} />
+      {posts.length > 0 ? (
+        <>
+          {posts.map((post) => (
+            <PostItem key={post.id} currentUser={currentUser} post={post} />
+          ))}
+        </>
+      ) : (
+        <EmptyState label="No posts available" />
+      )}
     </div>
   );
 }

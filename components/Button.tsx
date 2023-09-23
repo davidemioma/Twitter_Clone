@@ -21,7 +21,7 @@ const Button = ({
 }: Props) => {
   return (
     <button
-      className={`border-2 font-semibold rounded-full transition hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-70 ${
+      className={`border-2 font-semibold rounded-full transition hover:opacity-80 disabled:opacity-70 ${
         fullWidth ? "w-full" : "w-fit"
       } ${
         secondary

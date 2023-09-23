@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import Widgets from "@/components/Widgets";
+import Widgets from "@/components/widgets/Widgets";
 import { Nunito_Sans } from "next/font/google";
 import Container from "@/components/Container";
 import Sidebar from "@/components/sidebar/Sidebar";
@@ -41,7 +41,9 @@ export default async function RootLayout({
               {children}
             </div>
 
-            <Widgets currentUser={currentUser} suggestions={suggestions} />
+            {suggestions.length > 0 && (
+              <Widgets currentUser={currentUser} suggestions={suggestions} />
+            )}
           </Container>
         </QueryProvider>
       </body>

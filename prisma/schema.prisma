@@ -32,6 +32,9 @@ model User{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  followersIds String[]  @db.ObjectId
+  followingsIds String[]  @db.ObjectId
+
   likedPostIds String[] @db.ObjectId
   likedPosts Post[] @relation("liked", fields: [likedPostIds], references: [id])
 
