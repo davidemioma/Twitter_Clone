@@ -27,14 +27,6 @@ const MessagesBody = ({ currentUser, conversationId }: Props) => {
 
   useChatSocket({ pusherKey: conversationId, queryKey });
 
-  useChatScroll({
-    chatRef,
-    bottomRef,
-    loadMore: fetchNextPage,
-    shouldLoadMore: !isFetchingNextPage && !!hasNextPage,
-    count: data?.pages?.[0]?.messages.length ?? 0,
-  });
-
   useEffect(() => {
     const seeHandler = async () => {
       await seeMessage({ conversationId });
@@ -42,6 +34,14 @@ const MessagesBody = ({ currentUser, conversationId }: Props) => {
 
     seeHandler();
   }, [seeMessage, conversationId]);
+
+  useChatScroll({
+    chatRef,
+    bottomRef,
+    loadMore: fetchNextPage,
+    shouldLoadMore: !isFetchingNextPage && !!hasNextPage,
+    count: data?.pages?.[0]?.messages.length ?? 0,
+  });
 
   if (status === "loading") {
     return (

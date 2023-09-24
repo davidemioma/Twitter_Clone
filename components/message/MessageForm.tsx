@@ -30,8 +30,6 @@ const MessageForm = ({ conversationId }: Props) => {
     try {
       await sendMessage({ conversationId, image, body });
 
-      toast.success("Message sent");
-
       setBody("");
 
       setImage("");
