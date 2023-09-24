@@ -19,3 +19,7 @@ export type ConversationProps = Conversation & {
   memberTwo: User;
   messages: Message[];
 };
+
+export type MessageProps = Message & {
+  user: User;
+};

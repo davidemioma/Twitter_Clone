@@ -57,7 +57,7 @@ const ImageUpload = ({ forPost, value, label, disabled, onChange }: Props) => {
   return (
     <>
       {forPost ? (
-        <div {...getRootProps()} className="cursor-pointer">
+        <div {...getRootProps()} className="flex items-center cursor-pointer">
           <input {...getInputProps()} />
 
           {base64 ? (

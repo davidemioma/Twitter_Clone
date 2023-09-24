@@ -1,3 +1,10 @@
+import Header from "@/components/Header";
+import { redirect } from "next/navigation";
+import MessageForm from "@/components/message/MessageForm";
+import MessagesBody from "@/components/message/MessagesBody";
+import { getCurrentUser } from "@/app/actions/getCurrentUser";
+import { getConversationById } from "@/app/actions/getConversationById";
+
 export default async function Conversation({
   params,
 }: {
@@ -5,5 +12,35 @@ export default async function Conversation({
 }) {
   const { id } = params;
 
-  return <div>Conversation</div>;
+  const currentUser = await getCurrentUser();
+
+  const conversation = await getConversationById(id);
+
+  if (!currentUser) {
+    return redirect("/");
+  }
+
+  if (!conversation) {
+    return redirect("/messages");
+  }
+
+  const otherUser =
+    conversation?.memberOneId === currentUser?.id
+      ? conversation?.memberTwo
+      : conversation?.memberOne;
+
+  return (
+    <div className="h-screen flex flex-col overflow-hidden">
+      <Header label={otherUser?.name || ""} showBackArrow />
+
+      <div className="flex-1">
+        <MessagesBody
+          currentUser={currentUser}
+          conversationId={conversation.id}
+        />
+      </div>
+
+      <MessageForm conversationId={conversation.id} />
+    </div>
+  );
 }
