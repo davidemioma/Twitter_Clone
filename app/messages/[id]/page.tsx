@@ -33,12 +33,10 @@ export default async function Conversation({
     <div className="h-screen flex flex-col overflow-hidden">
       <Header label={otherUser?.name || ""} showBackArrow />
 
-      <div className="flex-1">
-        <MessagesBody
-          currentUser={currentUser}
-          conversationId={conversation.id}
-        />
-      </div>
+      <MessagesBody
+        currentUser={currentUser}
+        conversationId={conversation.id}
+      />
 
       <MessageForm conversationId={conversation.id} />
     </div>

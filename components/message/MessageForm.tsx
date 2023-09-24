@@ -37,8 +37,7 @@ const MessageForm = ({ conversationId }: Props) => {
       setImage("");
 
       router.refresh();
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
       toast.error("Something went wrong. Try again!");
     } finally {
       setLoading(false);

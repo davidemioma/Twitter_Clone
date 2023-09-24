@@ -88,8 +88,8 @@ model Message{
   id String @id @default(auto()) @map("_id") @db.ObjectId
   userId String @db.ObjectId
   conversationId String @db.ObjectId
-  body String?
-  image String?
+  body String
+  image String
   seenIds String[] @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

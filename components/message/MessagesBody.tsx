@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, ElementRef, Fragment } from "react";
+import React, { useRef, ElementRef, Fragment, useEffect } from "react";
 import { User } from "@prisma/client";
 import { MessageProps } from "@/types";
 import MessageItem from "./MessageItem";
@@ -8,6 +8,7 @@ import useChatSocket from "@/hooks/useChatSocket";
 import { useChatQuery } from "@/hooks/useChatQuery";
 import { Loader2, ServerCrash } from "lucide-react";
 import { useChatScroll } from "@/hooks/useChatScroll";
+import { seeMessage } from "@/app/actions/seeMessage";
 
 interface Props {
   currentUser: User | null;
@@ -34,6 +35,14 @@ const MessagesBody = ({ currentUser, conversationId }: Props) => {
     count: data?.pages?.[0]?.messages.length ?? 0,
   });
 
+  useEffect(() => {
+    const seeHandler = async () => {
+      await seeMessage({ conversationId });
+    };
+
+    seeHandler();
+  }, [seeMessage, conversationId]);
+
   if (status === "loading") {
     return (
       <div className="w-full h-full flex flex-col justify-center items-center">
@@ -57,7 +66,7 @@ const MessagesBody = ({ currentUser, conversationId }: Props) => {
   return (
     <div
       ref={chatRef}
-      className="w-full h-full flex flex-col py-4 overflow-y-auto"
+      className="w-full h-full flex flex-col py-4 overflow-y-scroll"
     >
       {!hasNextPage && <div className="flex-1" />}
 
@@ -79,7 +88,7 @@ const MessagesBody = ({ currentUser, conversationId }: Props) => {
       <div className="flex flex-col-reverse mt-auto">
         {data?.pages.map((group, i) => (
           <Fragment key={i}>
-            {group?.messages.map((message: MessageProps) => (
+            {group?.messages?.map((message: MessageProps) => (
               <MessageItem
                 key={message.id}
                 message={message}

@@ -26,6 +26,10 @@ export const sendMessage = async ({ conversationId, body, image }: Props) => {
       where: {
         id: conversationId,
       },
+      include: {
+        memberOne: true,
+        memberTwo: true,
+      },
     });
 
     if (!conversationExists) {
@@ -42,8 +46,49 @@ export const sendMessage = async ({ conversationId, body, image }: Props) => {
       },
     });
 
-    if (conversationId && newMessage) {
-      await pusherServer.trigger(conversationId, "message:new", newMessage);
+    const updatedConversation = await prismadb.conversation.update({
+      where: {
+        id: conversationId,
+      },
+      data: {
+        messages: {
+          connect: {
+            id: newMessage.id,
+          },
+        },
+      },
+      include: {
+        memberOne: true,
+        memberTwo: true,
+        messages: true,
+      },
+    });
+
+    await pusherServer.trigger(conversationId, "message:new", newMessage);
+
+    const lastMessage =
+      updatedConversation.messages[updatedConversation.messages.length - 1];
+
+    if (updatedConversation.memberOne.email) {
+      await pusherServer.trigger(
+        updatedConversation.memberOne.email,
+        "conversation:update",
+        {
+          id: conversationId,
+          messages: [lastMessage],
+        }
+      );
+    }
+
+    if (updatedConversation.memberTwo.email) {
+      await pusherServer.trigger(
+        updatedConversation.memberTwo.email,
+        "conversation:update",
+        {
+          id: conversationId,
+          messages: [lastMessage],
+        }
+      );
     }
   } catch (err: any) {
     throw new Error(`Failed to send message: ${err.message}`);
