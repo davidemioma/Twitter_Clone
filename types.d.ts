@@ -1,4 +1,4 @@
-import { Notification, Post, User } from "@prisma/client";
+import { Conversation, Notification, Post, User } from "@prisma/client";
 
 export type PostProps = Post & {
   user: User;
@@ -6,4 +6,9 @@ export type PostProps = Post & {
 
 export type NotificationProps = Notification & {
   user: User;
+};
+
+export type ConversationProps = Conversation & {
+  memberOne: User;
+  memberTwo: User;
 };

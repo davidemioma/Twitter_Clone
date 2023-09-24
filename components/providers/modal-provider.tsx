@@ -6,6 +6,7 @@ import Login from "../modal/Login";
 import { User } from "@prisma/client";
 import Register from "../modal/Register";
 import CreatePost from "../modal/CreatePost";
+import Conversation from "../modal/Conversation";
 
 interface Props {
   currentUser: User | null;
@@ -29,6 +30,8 @@ const ModalProvider = ({ currentUser }: Props) => {
       <Edit currentUser={currentUser} />
 
       <CreatePost currentUser={currentUser} />
+
+      <Conversation />
     </>
   );
 };

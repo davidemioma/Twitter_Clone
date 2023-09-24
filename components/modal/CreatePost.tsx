@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import { User } from "@prisma/client";
-import usePostModal from "@/hooks/usePostModal";
-import FormBody from "../form/FormBody";
 import Modal from "./Modal";
+import { User } from "@prisma/client";
+import FormBody from "../form/FormBody";
+import usePostModal from "@/hooks/usePostModal";
 
 interface Props {
   currentUser: User | null;
