@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "../actions/getCurrentUser";
+import CreateBtn from "@/components/conversation/CreateBtn";
 import { getConversations } from "../actions/getConversations";
 import ConversationFeed from "@/components/conversation/ConversationFeed";
 import EmptyConversation from "@/components/conversation/EmptyConversation";
@@ -16,10 +17,15 @@ export default async function Messages() {
 
   return (
     <div className="h-screen overflow-y-auto scrollbar-hide">
-      <Header label="Messages" showBackArrow />
+      <Header label="Messages" showBackArrow>
+        <CreateBtn />
+      </Header>
 
       {conversations.length > 0 ? (
-        <ConversationFeed conversations={conversations} />
+        <ConversationFeed
+          currentUser={currentUser}
+          conversations={conversations}
+        />
       ) : (
         <EmptyConversation />
       )}

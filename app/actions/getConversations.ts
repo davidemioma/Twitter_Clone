@@ -18,6 +18,7 @@ export const getConversations = async () => {
       include: {
         memberOne: true,
         memberTwo: true,
+        messages: true,
       },
       orderBy: {
         createdAt: "desc",

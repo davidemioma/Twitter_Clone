@@ -7,9 +7,10 @@ import { BiArrowBack } from "react-icons/bi";
 interface Props {
   label: string;
   showBackArrow?: boolean;
+  children?: React.ReactNode;
 }
 
-const Header = ({ label, showBackArrow }: Props) => {
+const Header = ({ label, showBackArrow, children }: Props) => {
   const router = useRouter();
 
   return (
@@ -25,6 +26,8 @@ const Header = ({ label, showBackArrow }: Props) => {
         )}
 
         <h1 className="font-semibold">{label}</h1>
+
+        <div className="flex-1 flex justify-end">{children}</div>
       </div>
     </header>
   );
