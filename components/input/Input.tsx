@@ -1,4 +1,5 @@
-import { loginData } from "@/lib/validators/login";
+"use client";
+
 import React from "react";
 import { FieldValues, UseFormRegister, FieldErrors } from "react-hook-form";
 
