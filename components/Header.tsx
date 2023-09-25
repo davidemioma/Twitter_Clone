@@ -27,7 +27,7 @@ const Header = ({ label, showBackArrow, children }: Props) => {
 
         <h1 className="font-semibold">{label}</h1>
 
-        <div className="flex-1 flex justify-end">{children}</div>
+        {children && <div className="flex-1 flex justify-end">{children}</div>}
       </div>
     </header>
   );
