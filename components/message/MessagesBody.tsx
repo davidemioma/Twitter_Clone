@@ -33,7 +33,7 @@ const MessagesBody = ({ currentUser, conversationId }: Props) => {
     };
 
     seeHandler();
-  }, [seeMessage, conversationId]);
+  }, [conversationId]);
 
   useChatScroll({
     chatRef,

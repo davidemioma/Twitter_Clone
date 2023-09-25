@@ -54,7 +54,7 @@ const Edit = ({ currentUser }: Props) => {
     setCoverImage(currentUser?.coverImage!);
 
     setProfileImage(currentUser?.profileImage!);
-  }, [currentUser]);
+  }, [currentUser, setValue]);
 
   const addEmoji = (emoji: any) => {
     const currentValue = getValues("bio");

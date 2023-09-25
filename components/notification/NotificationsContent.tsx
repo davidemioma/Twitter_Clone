@@ -25,7 +25,7 @@ const NotificationsContent = ({ currentUser, notifications }: Props) => {
     };
 
     turnOff();
-  }, [turnOffNotification]);
+  }, []);
 
   useEffect(() => {
     if (!pusherKey) return;

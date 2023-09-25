@@ -42,7 +42,7 @@ const SidebarItem = ({
     } else if (href) {
       router.push(href);
     }
-  }, [router, onClick, href, auth, currentUser]);
+  }, [router, onClick, href, auth, currentUser, loginModal]);
 
   return (
     <div className="flex items-center" onClick={handleClick}>
