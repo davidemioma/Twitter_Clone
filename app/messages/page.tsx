@@ -12,7 +12,7 @@ export default async function Messages() {
   const conversations = await getConversations();
 
   if (!currentUser) {
-    redirect("/");
+    return redirect("/");
   }
 
   return (
