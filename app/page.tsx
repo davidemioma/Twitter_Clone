@@ -1,8 +1,10 @@
 import Form from "@/components/form/Form";
 import Header from "@/components/Header";
 import { getPosts } from "./actions/getPosts";
-import { getCurrentUser } from "./actions/getCurrentUser";
 import PostFeed from "@/components/post/PostFeed";
+import { getCurrentUser } from "./actions/getCurrentUser";
+
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const currentUser = await getCurrentUser();
