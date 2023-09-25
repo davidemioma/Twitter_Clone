@@ -1,13 +1,13 @@
 import prismadb from "@/lib/prismadb";
 import { Message } from "@prisma/client";
 import { NextResponse } from "next/server";
-import { getCurrentUser } from "@/app/actions/getCurrentUser";
+import { getSession } from "@/app/actions/getSession";
 
 const MESSAGE_BATCH = 10;
 
 export async function GET(request: Request) {
   try {
-    const currentUser = await getCurrentUser();
+    const session = await getSession();
 
     const { searchParams } = new URL(request.url);
 
@@ -15,7 +15,7 @@ export async function GET(request: Request) {
 
     const conversationId = searchParams.get("conversationId");
 
-    if (!currentUser) {
+    if (!session?.user) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
