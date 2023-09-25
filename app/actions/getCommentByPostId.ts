@@ -6,7 +6,7 @@ import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/lib/utils";
 export const getCommentByPostId = async (id: string) => {
   try {
     if (!id) {
-      throw new Error("Post ID is required");
+      return [];
     }
 
     const comments = await prismadb.post.findMany({

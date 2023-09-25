@@ -8,7 +8,7 @@ export const getNotifications = async () => {
     const currentUser = await getCurrentUser();
 
     if (!currentUser) {
-      throw new Error("Unauthorized");
+      return [];
     }
 
     const notifications = await prismadb.notification.findMany({

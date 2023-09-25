@@ -5,7 +5,7 @@ import prismadb from "@/lib/prismadb";
 export const getCommentsCount = async (id: string) => {
   try {
     if (!id) {
-      throw new Error("Post ID is required");
+      return 0;
     }
 
     const count = await prismadb.post.count({
