@@ -7,8 +7,6 @@ import { getPostById } from "@/app/actions/getPostById";
 import { getCurrentUser } from "@/app/actions/getCurrentUser";
 import { getCommentByPostId } from "@/app/actions/getCommentByPostId";
 
-export const dynamic = "force-dynamic";
-
 export default async function Post({ params }: { params: { id: string } }) {
   const { id } = params;
 

@@ -4,8 +4,6 @@ import { getCurrentUser } from "../actions/getCurrentUser";
 import { getNotifications } from "../actions/getNotifications";
 import NotificationsContent from "@/components/notification/NotificationsContent";
 
-export const dynamic = "force-dynamic";
-
 export default async function Notifications() {
   const currentUser = await getCurrentUser();
 

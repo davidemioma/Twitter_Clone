@@ -5,8 +5,6 @@ import MessagesBody from "@/components/message/MessagesBody";
 import { getCurrentUser } from "@/app/actions/getCurrentUser";
 import { getConversationById } from "@/app/actions/getConversationById";
 
-export const dynamic = "force-dynamic";
-
 export default async function Conversation({
   params,
 }: {

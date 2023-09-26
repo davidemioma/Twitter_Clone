@@ -8,8 +8,6 @@ import { getCurrentUser } from "@/app/actions/getCurrentUser";
 import { getProfileUser } from "@/app/actions/getProfileUser";
 import { getPostsByUserId } from "@/app/actions/getPostsByUserId";
 
-export const dynamic = "force-dynamic";
-
 export default async function User({ params }: { params: { id: string } }) {
   const { id } = params;
 

@@ -6,8 +6,6 @@ import FollowBar from "@/components/user/FollowBar";
 import { getCurrentUser } from "@/app/actions/getCurrentUser";
 import { getProfileUser } from "@/app/actions/getProfileUser";
 
-export const dynamic = "force-dynamic";
-
 export default async function Followings({
   params,
 }: {

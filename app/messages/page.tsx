@@ -6,8 +6,6 @@ import { getConversations } from "../actions/getConversations";
 import ConversationFeed from "@/components/conversation/ConversationFeed";
 import EmptyConversation from "@/components/conversation/EmptyConversation";
 
-export const dynamic = "force-dynamic";
-
 export default async function Messages() {
   const currentUser = await getCurrentUser();
 

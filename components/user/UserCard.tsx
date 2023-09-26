@@ -4,8 +4,6 @@ import FollowBtn from "./FollowBtn";
 import { User } from "@prisma/client";
 import { getProfileUser } from "@/app/actions/getProfileUser";
 
-export const dynamic = "force-dynamic";
-
 interface Props {
   currentUser: User | null;
   userId: string;
