@@ -1,5 +1,4 @@
 import Header from "@/components/Header";
-import { redirect } from "next/navigation";
 import { getCurrentUser } from "../actions/getCurrentUser";
 import CreateBtn from "@/components/conversation/CreateBtn";
 import { getConversations } from "../actions/getConversations";
@@ -12,10 +11,6 @@ export default async function Messages() {
   const currentUser = await getCurrentUser();
 
   const conversations = await getConversations();
-
-  if (!currentUser) {
-    return redirect("/");
-  }
 
   return (
     <div className="h-screen overflow-y-auto scrollbar-hide">

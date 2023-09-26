@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import Form from "@/components/form/Form";
-import { redirect } from "next/navigation";
+import EmptyState from "@/components/EmptyState";
 import PostItem from "@/components/post/PostItem";
 import CommentFeed from "@/components/CommentFeed";
 import { getPostById } from "@/app/actions/getPostById";
@@ -17,7 +17,7 @@ export default async function Post({ params }: { params: { id: string } }) {
   const comments = await getCommentByPostId(id);
 
   if (!post) {
-    return redirect("/");
+    return <EmptyState label="Post does not exists" />;
   }
 
   return (

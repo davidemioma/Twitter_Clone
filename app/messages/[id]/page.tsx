@@ -16,10 +16,6 @@ export default async function Conversation({
 
   const conversation = await getConversationById(id);
 
-  if (!currentUser) {
-    return redirect("/");
-  }
-
   if (!conversation) {
     return redirect("/messages");
   }

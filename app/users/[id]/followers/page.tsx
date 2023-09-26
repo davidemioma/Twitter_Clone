@@ -1,5 +1,4 @@
 import Header from "@/components/Header";
-import { redirect } from "next/navigation";
 import EmptyState from "@/components/EmptyState";
 import UserCard from "@/components/user/UserCard";
 import FollowBar from "@/components/user/FollowBar";
@@ -18,7 +17,7 @@ export default async function Followers({
   const profileUser = await getProfileUser(id);
 
   if (!profileUser) {
-    return redirect("/");
+    return <EmptyState label="User does not exists" />;
   }
 
   return (

@@ -11,10 +11,6 @@ export default async function Notifications() {
 
   const notifications = await getNotifications();
 
-  if (!currentUser) {
-    return redirect("/");
-  }
-
   return (
     <div className="h-screen overflow-y-auto scrollbar-hide">
       <Header label="Notifications" showBackArrow />
