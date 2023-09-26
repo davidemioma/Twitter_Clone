@@ -58,7 +58,7 @@ const MessageItem = ({ currentUser, message }: Props) => {
           )}
 
           {message.image && (
-            <div className="relative w-[250px] h-[250px] rounded-md overflow-hidden">
+            <div className="relative w-[150px] h-[150px] md:w-[250px] md:h-[250px] mt-1 rounded-md overflow-hidden">
               <Image
                 className="object-cover cursor-pointer hover:scale-110 transition-transform duration-300"
                 src={message.image}
