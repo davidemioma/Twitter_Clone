@@ -6,6 +6,7 @@ import Avatar from "../Avatar";
 import { User } from "@prisma/client";
 import { MessageProps } from "@/types";
 import { formatTimeToNow } from "@/lib/utils";
+import useImageModal from "@/hooks/useImageModal";
 
 interface Props {
   currentUser: User | null;
@@ -13,6 +14,8 @@ interface Props {
 }
 
 const MessageItem = ({ currentUser, message }: Props) => {
+  const imageModal = useImageModal();
+
   if (!message || !message.user) {
     return null;
   }
@@ -61,6 +64,7 @@ const MessageItem = ({ currentUser, message }: Props) => {
                 src={message.image}
                 fill
                 alt=""
+                onClick={() => imageModal.onOpen(message.image)}
               />
             </div>
           )}
