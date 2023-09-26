@@ -1,14 +1,26 @@
+import { z } from "zod";
 import prismadb from "@/lib/prismadb";
 import { User } from "@prisma/client";
-import { getCurrentUser } from "./getCurrentUser";
+import { NextResponse } from "next/server";
+import { getCurrentUser } from "@/app/actions/getCurrentUser";
 
-export const getSearchedUsers = async (searchQuery: string) => {
+export async function GET(request: Request) {
   try {
     const currentUser = await getCurrentUser();
 
     if (!currentUser) {
-      return [];
+      return new NextResponse("Unauthorized", { status: 401 });
     }
+
+    const url = new URL(request.url);
+
+    const { searchQuery } = z
+      .object({
+        searchQuery: z.string(),
+      })
+      .parse({
+        searchQuery: url.searchParams.get("searchQuery"),
+      });
 
     let results: User[] = [];
 
@@ -37,8 +49,8 @@ export const getSearchedUsers = async (searchQuery: string) => {
       });
     }
 
-    return results;
+    return NextResponse.json(results);
   } catch (err) {
-    return [];
+    return new NextResponse("Internal Error", { status: 500 });
   }
-};
+}

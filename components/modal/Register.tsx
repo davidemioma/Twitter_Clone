@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useState } from "react";
+import axios from "axios";
 import Modal from "./Modal";
 import Input from "../input/Input";
 import { toast } from "react-hot-toast";
@@ -10,8 +11,6 @@ import useLoginModal from "@/hooks/useLoginModal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useRegisterModal from "@/hooks/useRegisterModal";
 import { registerData, registerSchema } from "@/lib/validators/register";
-import { registerUser } from "@/app/actions/registerUser";
-import axios from "axios";
 
 const Register = () => {
   const loginModal = useLoginModal();

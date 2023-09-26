@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { User } from "@prisma/client";
-import { getSearchedUsers } from "@/app/actions/getSearchedUsers";
 
 const useSearchedUsers = (searchQuery: string) => {
   const [debounceValue, setDebounceValue] = useState(searchQuery);
@@ -15,9 +15,11 @@ const useSearchedUsers = (searchQuery: string) => {
 
   useEffect(() => {
     const getUsers = async () => {
-      const results = await getSearchedUsers(debounceValue);
+      const res = await axios.get(
+        `/api/search-users?searchQuery=${debounceValue}`
+      );
 
-      setResults(results);
+      setResults(res.data);
     };
 
     getUsers();
