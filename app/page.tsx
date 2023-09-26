@@ -4,6 +4,8 @@ import { getPosts } from "./actions/getPosts";
 import PostFeed from "@/components/post/PostFeed";
 import { getCurrentUser } from "./actions/getCurrentUser";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const currentUser = await getCurrentUser();
 
