@@ -1,5 +1,5 @@
 import Header from "@/components/Header";
-import { redirect } from "next/navigation";
+import EmptyState from "@/components/EmptyState";
 import MessageForm from "@/components/message/MessageForm";
 import MessagesBody from "@/components/message/MessagesBody";
 import { getCurrentUser } from "@/app/actions/getCurrentUser";
@@ -17,7 +17,7 @@ export default async function Conversation({
   const conversation = await getConversationById(id);
 
   if (!conversation) {
-    return redirect("/messages");
+    return <EmptyState label="Conversation dosen't exist" />;
   }
 
   const otherUser =
