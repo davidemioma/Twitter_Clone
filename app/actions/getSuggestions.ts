@@ -1,5 +1,3 @@
-"use server";
-
 import prismadb from "@/lib/prismadb";
 import { getRandomUsers } from "@/lib/utils";
 import { getCurrentUser } from "./getCurrentUser";

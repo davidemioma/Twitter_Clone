@@ -1,24 +1,28 @@
-"use server";
-
+import { z } from "zod";
 import prismadb from "@/lib/prismadb";
-import { getCurrentUser } from "./getCurrentUser";
+import { NextResponse } from "next/server";
 import { pusherServer } from "@/lib/pusher";
+import { getCurrentUser } from "@/app/actions/getCurrentUser";
 
-interface Props {
-  postId: string;
-  hasLiked: boolean;
-}
-
-export const likePost = async ({ postId, hasLiked }: Props) => {
+export async function POST(request: Request) {
   try {
     const currentUser = await getCurrentUser();
 
     if (!currentUser) {
-      throw new Error("Unauthorized");
+      return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    const reqBody = await request.json();
+
+    const { postId, hasLiked } = z
+      .object({
+        postId: z.string(),
+        hasLiked: z.boolean(),
+      })
+      .parse(reqBody);
+
     if (!postId) {
-      throw new Error("Post ID is required");
+      return new NextResponse("Post ID required", { status: 400 });
     }
 
     const postExists = await prismadb.post.findUnique({
@@ -31,7 +35,7 @@ export const likePost = async ({ postId, hasLiked }: Props) => {
     });
 
     if (!postExists) {
-      throw new Error("Post does not exists");
+      return new NextResponse("Post does not exist", { status: 400 });
     }
 
     if (hasLiked) {
@@ -91,9 +95,9 @@ export const likePost = async ({ postId, hasLiked }: Props) => {
         );
       }
     }
-  } catch (err: any) {
-    throw new Error(
-      `Failed to ${hasLiked ? "remove like" : "like"} post: ${err.message}`
-    );
+
+    return NextResponse.json("Successful");
+  } catch (err) {
+    return new NextResponse("Internal Error", { status: 500 });
   }
-};
+}

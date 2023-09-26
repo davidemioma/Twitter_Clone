@@ -1,15 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
+import axios from "axios";
 import Avatar from "../Avatar";
 import Button from "../Button";
 import { User } from "@prisma/client";
 import { toast } from "react-hot-toast";
 import ImageUpload from "../input/ImageUpload";
 import EmojiPicker from "../input/EmojiPicker";
-import { createPost } from "@/app/actions/createPost";
 import usePostModal from "@/hooks/usePostModal";
-import { createComment } from "@/app/actions/createComment";
 
 interface Props {
   currentUser: User | null;
@@ -40,18 +39,11 @@ const FormBody = ({ currentUser, placeholder, isComment, postId }: Props) => {
 
     try {
       if (isComment && postId) {
-        await createComment({
-          postId,
-          body,
-          image,
-        });
+        await axios.post("/api/comments/create", { postId, body, image });
 
         toast.success("Comment created");
       } else {
-        await createPost({
-          image,
-          body,
-        });
+        await axios.post("/api/posts/create", { body, image });
 
         toast.success("Tweet created");
       }

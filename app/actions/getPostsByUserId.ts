@@ -1,5 +1,3 @@
-"use server";
-
 import prismadb from "@/lib/prismadb";
 
 export const getPostsByUserId = async (userId: string) => {

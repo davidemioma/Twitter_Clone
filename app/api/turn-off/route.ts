@@ -1,14 +1,15 @@
-"use server";
-
 import prismadb from "@/lib/prismadb";
-import { getCurrentUser } from "./getCurrentUser";
+import { NextResponse } from "next/server";
 import { pusherServer } from "@/lib/pusher";
+import { getCurrentUser } from "@/app/actions/getCurrentUser";
 
-export const turnOffNotification = async () => {
+export async function PATCH(request: Request) {
   try {
     const currentUser = await getCurrentUser();
 
-    if (!currentUser) return;
+    if (!currentUser) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
 
     await prismadb.user.update({
       where: {
@@ -22,7 +23,9 @@ export const turnOffNotification = async () => {
     if (currentUser.email) {
       await pusherServer.trigger(currentUser?.email, "notification:off", false);
     }
-  } catch (err: any) {
-    throw new Error(`Failed to turn off notification: ${err.message}`);
+
+    return NextResponse.json("Notifications off");
+  } catch (err) {
+    return new NextResponse("Internal Error", { status: 500 });
   }
-};
+}

@@ -1,5 +1,3 @@
-"use server";
-
 import prismadb from "@/lib/prismadb";
 import { User } from "@prisma/client";
 import { getCurrentUser } from "./getCurrentUser";

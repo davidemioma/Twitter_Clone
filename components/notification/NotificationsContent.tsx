@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
+import axios from "axios";
 import { find } from "lodash";
 import Avatar from "../Avatar";
 import { User } from "@prisma/client";
 import EmptyState from "../EmptyState";
 import { NotificationProps } from "@/types";
 import { pusherClient } from "@/lib/pusher";
-import { turnOffNotification } from "@/app/actions/turnOffNotification";
 
 interface Props {
   currentUser: User | null;
@@ -21,7 +21,7 @@ const NotificationsContent = ({ currentUser, notifications }: Props) => {
 
   useEffect(() => {
     const turnOff = async () => {
-      await turnOffNotification();
+      await axios.patch("/api/turn-off");
     };
 
     turnOff();

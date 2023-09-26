@@ -1,9 +1,9 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { User } from "@prisma/client";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import useLoginModal from "./useLoginModal";
-import { followUser } from "@/app/actions/followUser";
 
 interface Props {
   currentUser: User | null;
@@ -45,7 +45,10 @@ const useFollow = ({ currentUser, profileUser }: Props) => {
         setIsFollowing((prev) => !prev);
       }, 1000);
 
-      await followUser({ profileUserId: profileUser?.id, isFollowing });
+      await axios.post("/api/follow", {
+        profileUserId: profileUser?.id,
+        isFollowing,
+      });
 
       router.refresh();
     } catch (err) {

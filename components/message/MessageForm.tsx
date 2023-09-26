@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
+import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import ImageUpload from "../input/ImageUpload";
 import EmojiPicker from "../input/EmojiPicker";
-import { sendMessage } from "@/app/actions/sendMessage";
 
 interface Props {
   conversationId: string;
@@ -28,13 +28,13 @@ const MessageForm = ({ conversationId }: Props) => {
     setLoading(true);
 
     try {
-      await sendMessage({ conversationId, image, body });
+      await axios.post("/api/messages/send", { conversationId, image, body });
+
+      router.refresh();
 
       setBody("");
 
       setImage("");
-
-      router.refresh();
     } catch (err: any) {
       toast.error("Something went wrong. Try again!");
     } finally {

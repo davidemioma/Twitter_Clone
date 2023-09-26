@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import useRegisterModal from "@/hooks/useRegisterModal";
 import { registerData, registerSchema } from "@/lib/validators/register";
 import { registerUser } from "@/app/actions/registerUser";
+import axios from "axios";
 
 const Register = () => {
   const loginModal = useLoginModal();
@@ -45,7 +46,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      await registerUser({
+      await axios.post("/api/account/register", {
         name: values.name,
         username: values.username,
         email: values.email,

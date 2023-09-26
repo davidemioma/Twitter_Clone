@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { PostProps } from "@/types";
 import { User } from "@prisma/client";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import useLoginModal from "./useLoginModal";
-import { likePost } from "@/app/actions/LikePost";
 
 interface Props {
   currentUser: User | null;
@@ -50,7 +50,7 @@ const useLike = ({ currentUser, post }: Props) => {
 
       setLikeCount((prev) => (hasLiked ? prev - 1 : prev + 1));
 
-      await likePost({ postId: post.id, hasLiked });
+      await axios.post("/api/like", { postId: post.id, hasLiked });
 
       router.refresh();
     } catch (err) {

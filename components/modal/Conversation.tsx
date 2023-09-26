@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import axios from "axios";
 import Modal from "./Modal";
 import Image from "next/image";
 import Button from "../Button";
@@ -9,7 +10,6 @@ import { FiSearch } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import useSearchedUsers from "@/hooks/useSearchedUsers";
 import useConversationModal from "@/hooks/useConversationModal";
-import { createConversation } from "@/app/actions/createConversation";
 
 const Conversation = () => {
   const router = useRouter();
@@ -26,11 +26,11 @@ const Conversation = () => {
     setLoading(true);
 
     try {
-      const conversation = await createConversation(userId);
+      const res = await axios.post("/api/conversations/create", { userId });
 
       router.refresh();
 
-      router.push(`/messages/${conversation.id}`);
+      router.push(`/messages/${res.data.id}`);
 
       conversationModal.onClose();
     } catch (err) {

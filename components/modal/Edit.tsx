@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Modal from "./Modal";
 import Input from "../input/Input";
 import { User } from "@prisma/client";
@@ -12,7 +13,6 @@ import EmojiPicker from "../input/EmojiPicker";
 import useEditModal from "@/hooks/useEditModal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { editData, editSchema } from "@/lib/validators/edit";
-import { updateAccount } from "@/app/actions/updateAccount";
 
 interface Props {
   currentUser: User | null;
@@ -68,7 +68,7 @@ const Edit = ({ currentUser }: Props) => {
     setLoading(true);
 
     try {
-      await updateAccount({
+      await axios.patch("/api/account/update", {
         name: values.name,
         username: values.username,
         bio: values.bio,

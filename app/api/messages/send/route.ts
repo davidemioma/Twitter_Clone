@@ -1,25 +1,29 @@
-"use server";
-
+import { z } from "zod";
 import prismadb from "@/lib/prismadb";
-import { getCurrentUser } from "./getCurrentUser";
+import { NextResponse } from "next/server";
 import { pusherServer } from "@/lib/pusher";
+import { getCurrentUser } from "@/app/actions/getCurrentUser";
 
-interface Props {
-  conversationId: string;
-  body: string;
-  image: string;
-}
-
-export const sendMessage = async ({ conversationId, body, image }: Props) => {
+export async function POST(request: Request) {
   try {
     const currentUser = await getCurrentUser();
 
     if (!currentUser) {
-      throw new Error("Unauthorized");
+      return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    const reqBody = await request.json();
+
+    const { conversationId, body, image } = z
+      .object({
+        conversationId: z.string(),
+        body: z.string(),
+        image: z.string(),
+      })
+      .parse(reqBody);
+
     if (!conversationId) {
-      throw new Error("Conversation ID is required");
+      return new NextResponse("Conversation ID required", { status: 400 });
     }
 
     const conversationExists = await prismadb.conversation.findUnique({
@@ -33,7 +37,9 @@ export const sendMessage = async ({ conversationId, body, image }: Props) => {
     });
 
     if (!conversationExists) {
-      throw new Error("Conversation does not exists");
+      return new NextResponse("Conversation does not exist", {
+        status: 400,
+      });
     }
 
     const newMessage = await prismadb.message.create({
@@ -90,7 +96,9 @@ export const sendMessage = async ({ conversationId, body, image }: Props) => {
         }
       );
     }
-  } catch (err: any) {
-    throw new Error(`Failed to send message: ${err.message}`);
+
+    return NextResponse.json("Comment created");
+  } catch (err) {
+    return new NextResponse("Internal Error", { status: 500 });
   }
-};
+}

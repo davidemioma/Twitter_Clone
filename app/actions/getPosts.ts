@@ -1,5 +1,3 @@
-"use server";
-
 import prismadb from "@/lib/prismadb";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/lib/utils";
 

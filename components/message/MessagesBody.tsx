@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, ElementRef, Fragment, useEffect } from "react";
+import axios from "axios";
 import { User } from "@prisma/client";
 import { MessageProps } from "@/types";
 import MessageItem from "./MessageItem";
@@ -8,7 +9,6 @@ import useChatSocket from "@/hooks/useChatSocket";
 import { useChatQuery } from "@/hooks/useChatQuery";
 import { Loader2, ServerCrash } from "lucide-react";
 import { useChatScroll } from "@/hooks/useChatScroll";
-import { seeMessage } from "@/app/actions/seeMessage";
 
 interface Props {
   currentUser: User | null;
@@ -29,7 +29,7 @@ const MessagesBody = ({ currentUser, conversationId }: Props) => {
 
   useEffect(() => {
     const seeHandler = async () => {
-      await seeMessage({ conversationId });
+      await axios.patch("/api/messages/seen", { conversationId });
     };
 
     seeHandler();

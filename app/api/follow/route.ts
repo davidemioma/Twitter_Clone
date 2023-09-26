@@ -1,24 +1,28 @@
-"use server";
-
+import { z } from "zod";
 import prismadb from "@/lib/prismadb";
+import { NextResponse } from "next/server";
 import { pusherServer } from "@/lib/pusher";
-import { getCurrentUser } from "./getCurrentUser";
+import { getCurrentUser } from "@/app/actions/getCurrentUser";
 
-interface Props {
-  profileUserId: string;
-  isFollowing: boolean;
-}
-
-export const followUser = async ({ profileUserId, isFollowing }: Props) => {
+export async function POST(request: Request) {
   try {
     const currentUser = await getCurrentUser();
 
     if (!currentUser) {
-      throw new Error("Unauthorized");
+      return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    const reqBody = await request.json();
+
+    const { profileUserId, isFollowing } = z
+      .object({
+        profileUserId: z.string(),
+        isFollowing: z.boolean(),
+      })
+      .parse(reqBody);
+
     if (!profileUserId) {
-      throw new Error("User ID is required");
+      return new NextResponse("User ID required", { status: 400 });
     }
 
     const profileExists = await prismadb.user.findUnique({
@@ -28,7 +32,7 @@ export const followUser = async ({ profileUserId, isFollowing }: Props) => {
     });
 
     if (!profileExists) {
-      throw new Error("User does not exists");
+      return new NextResponse("Profile does not exist", { status: 400 });
     }
 
     if (isFollowing) {
@@ -132,9 +136,9 @@ export const followUser = async ({ profileUserId, isFollowing }: Props) => {
         );
       }
     }
-  } catch (err: any) {
-    throw new Error(
-      `Failed to ${isFollowing ? "unfollow" : "follow"} user: ${err.message}`
-    );
+
+    return NextResponse.json("Successful");
+  } catch (err) {
+    return new NextResponse("Internal Error", { status: 500 });
   }
-};
+}
