@@ -1,10 +1,9 @@
 "use client";
 
 import React from "react";
-import { Smile } from "lucide-react";
 import data from "@emoji-mart/data";
+import { Smile } from "lucide-react";
 import Picker from "@emoji-mart/react";
-import { useTheme } from "next-themes";
 import {
   Popover,
   PopoverContent,
@@ -16,8 +15,6 @@ interface Props {
 }
 
 const EmojiPicker = ({ onChange }: Props) => {
-  const { resolvedTheme } = useTheme();
-
   return (
     <Popover>
       <PopoverTrigger>
@@ -31,7 +28,7 @@ const EmojiPicker = ({ onChange }: Props) => {
       >
         <Picker
           data={data}
-          theme={resolvedTheme}
+          theme="dark"
           onEmojiSelect={(emoji: any) => onChange(emoji.native)}
         />
       </PopoverContent>
