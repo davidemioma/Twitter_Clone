@@ -16,7 +16,7 @@ interface Props {
 }
 
 const MessagesBody = ({ currentUser, conversationId }: Props) => {
-  const queryKey = `chat:${conversationId}`;
+  const queryKey = `${conversationId}`;
 
   const chatRef = useRef<ElementRef<"div">>(null);
 
