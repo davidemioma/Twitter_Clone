@@ -69,7 +69,7 @@ const MessageForm = ({ conversationId }: Props) => {
 
         <button
           type="submit"
-          className="text-sky-500 cursor-pointer disabled:opacity-75"
+          className="hidden sm:inline text-sky-500 cursor-pointer disabled:opacity-75"
           disabled={loading}
         >
           Send

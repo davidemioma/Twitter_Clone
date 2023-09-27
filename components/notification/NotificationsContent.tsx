@@ -64,7 +64,7 @@ const NotificationsContent = ({ currentUser, notifications }: Props) => {
         >
           <Avatar
             userId={notification.user.id}
-            imageUrl={notification.user.image}
+            imageUrl={notification.user.profileImage}
           />
 
           <p className="text-sm">{notification.body}</p>
