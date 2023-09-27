@@ -1,14 +1,19 @@
 "use client";
 
 import React from "react";
+import dynamic from "next/dynamic";
 import data from "@emoji-mart/data";
 import { Smile } from "lucide-react";
-import Picker from "@emoji-mart/react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+
+const Picker = dynamic(
+  async () => (await import("@emoji-mart/react")).default,
+  { ssr: false }
+);
 
 interface Props {
   onChange: (value: string) => void;
