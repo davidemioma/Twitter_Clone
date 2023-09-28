@@ -4,17 +4,15 @@ import { pusherClient } from "@/lib/pusher";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
-  pusherKey: string;
   queryKey: string;
+  pusherKey: string;
 }
 
-const useChatSocket = ({ pusherKey, queryKey }: Props) => {
+const useChatSocket = ({ queryKey, pusherKey }: Props) => {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (!pusherClient) {
-      return;
-    }
+    if (!pusherKey) return;
 
     pusherClient.subscribe(pusherKey);
 

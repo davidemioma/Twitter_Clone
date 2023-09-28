@@ -99,6 +99,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json("Comment created");
   } catch (err) {
+    console.log("SEND_MESSAGE", err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

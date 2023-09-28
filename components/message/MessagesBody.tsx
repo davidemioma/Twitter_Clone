@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, ElementRef, Fragment, useEffect } from "react";
+import React, { useRef, ElementRef, Fragment, useEffect, useMemo } from "react";
 import axios from "axios";
 import { User } from "@prisma/client";
 import { MessageProps } from "@/types";
@@ -9,6 +9,7 @@ import useChatSocket from "@/hooks/useChatSocket";
 import { useChatQuery } from "@/hooks/useChatQuery";
 import { Loader2, ServerCrash } from "lucide-react";
 import { useChatScroll } from "@/hooks/useChatScroll";
+import useActiveChannel from "@/hooks/useActiveChannel";
 
 interface Props {
   currentUser: User | null;
@@ -16,24 +17,24 @@ interface Props {
 }
 
 const MessagesBody = ({ currentUser, conversationId }: Props) => {
-  const queryKey = `${conversationId}`;
+  const queryKey = `chat:${conversationId}`;
 
   const chatRef = useRef<ElementRef<"div">>(null);
 
   const bottomRef = useRef<ElementRef<"div">>(null);
 
+  const pusherKey = useMemo(() => conversationId, [conversationId]);
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
-    useChatQuery({ queryKey, conversationId });
+    useChatQuery({
+      queryKey,
+      conversationId,
+      currentUser,
+    });
 
-  useChatSocket({ pusherKey: conversationId, queryKey });
+  useActiveChannel();
 
-  useEffect(() => {
-    const seeHandler = async () => {
-      await axios.patch("/api/messages/seen", { conversationId });
-    };
-
-    seeHandler();
-  }, [conversationId]);
+  useChatSocket({ pusherKey, queryKey });
 
   useChatScroll({
     chatRef,
@@ -42,6 +43,14 @@ const MessagesBody = ({ currentUser, conversationId }: Props) => {
     shouldLoadMore: !isFetchingNextPage && !!hasNextPage,
     count: data?.pages?.[0]?.messages.length ?? 0,
   });
+
+  useEffect(() => {
+    const seeHandler = async () => {
+      await axios.patch("/api/messages/seen", { conversationId });
+    };
+
+    seeHandler();
+  }, [conversationId]);
 
   if (status === "loading") {
     return (
@@ -66,7 +75,7 @@ const MessagesBody = ({ currentUser, conversationId }: Props) => {
   return (
     <div
       ref={chatRef}
-      className="w-full h-full flex flex-col py-4 overflow-y-scroll"
+      className="w-full h-full flex flex-col py-4 overflow-y-scroll scrollbar-hide"
     >
       {!hasNextPage && <div className="flex-1" />}
 

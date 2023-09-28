@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Link from "next/link";
 import { PostProps } from "@/types";
 import { User } from "@prisma/client";
 import useLike from "@/hooks/useLike";
 import { numberFormatter } from "@/lib/utils";
-import { getCommentsCount } from "@/app/actions/getCommentsCount";
 import { AiOutlineHeart, AiFillHeart, AiOutlineMessage } from "react-icons/ai";
 
 interface Props {
@@ -23,16 +23,14 @@ const PostBtns = ({ currentUser, post }: Props) => {
   });
 
   useEffect(() => {
-    if (!post) return;
-
     const getCount = async () => {
-      const count = await getCommentsCount(post.id);
+      const res = await axios.get(`/api/comments/count?id=${post.id}`);
 
-      setCommentCount(count);
+      setCommentCount(res.data);
     };
 
     getCount();
-  }, [post]);
+  }, [post.id]);
 
   return (
     <div className="flex items-center gap-10 mt-3">
