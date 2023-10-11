@@ -37,7 +37,7 @@ export default async function RootLayout({
           <Container>
             <Sidebar currentUser={currentUser} />
 
-            <div className="col-span-3 lg:col-span-2 border-x border-neutral-800">
+            <div className="col-span-3 lg:col-span-2 border-x border-neutral-800 h-full">
               {children}
             </div>
 
