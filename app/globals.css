@@ -5,5 +5,5 @@
 html,
 body,
 :root {
-  @apply bg-black h-full text-white;
+  @apply bg-black h-screen text-white overflow-hidden;
 }

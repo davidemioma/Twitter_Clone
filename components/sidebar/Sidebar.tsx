@@ -88,7 +88,7 @@ const Sidebar = ({ currentUser }: Props) => {
   ];
 
   return (
-    <div className="col-sapn-1 h-full flex flex-col pr-4 md:pr-6">
+    <div className="col-sapn-1 h-full flex flex-col pr-4 md:pr-6 overflow-hidden">
       <div className="lg:w-[230px] flex flex-1 justify-end">
         <div className="flex flex-col gap-2">
           <SidebarLogo />

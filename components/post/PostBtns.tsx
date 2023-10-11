@@ -17,7 +17,7 @@ interface Props {
 const PostBtns = ({ currentUser, post }: Props) => {
   const [commentCount, setCommentCount] = useState(0);
 
-  const { hasLiked, likeCount, loading, toggleLike } = useLike({
+  const { hasLiked, likeCount, toggleLike } = useLike({
     post,
     currentUser,
   });
@@ -43,7 +43,7 @@ const PostBtns = ({ currentUser, post }: Props) => {
       </Link>
 
       <div className="flex items-center justify-center gap-2 text-neutral-500 cursor-pointer transition hover:text-red-500">
-        <button onClick={toggleLike} disabled={loading}>
+        <button onClick={toggleLike}>
           {hasLiked ? (
             <AiFillHeart size={22} className="text-red-500" />
           ) : (
