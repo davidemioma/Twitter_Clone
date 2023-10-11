@@ -3,9 +3,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { find } from "lodash";
-import Avatar from "../Avatar";
 import { User } from "@prisma/client";
 import EmptyState from "../EmptyState";
+import { BsTwitter } from "react-icons/bs";
 import { NotificationProps } from "@/types";
 import { pusherClient } from "@/lib/pusher";
 
@@ -62,10 +62,7 @@ const NotificationsContent = ({ currentUser, notifications }: Props) => {
           key={notification.id}
           className="flex items-center gap-4 p-6 border-b border-neutral-800"
         >
-          <Avatar
-            userId={notification.user.id}
-            imageUrl={notification.user.profileImage}
-          />
+          <BsTwitter size={28} color="#fff" />
 
           <p className="text-sm">{notification.body}</p>
         </div>
