@@ -61,7 +61,7 @@ const Register = () => {
 
       registerModal.onClose();
     } catch (err: any) {
-      toast.error(err.message || "Something went wrong!");
+      toast.error(err.response.data || "Something went wrong!");
     } finally {
       setLoading(false);
     }
