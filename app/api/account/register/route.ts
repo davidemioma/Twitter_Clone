@@ -2,16 +2,9 @@ import bcrypt from "bcrypt";
 import prismadb from "@/lib/prismadb";
 import { NextResponse } from "next/server";
 import { registerSchema } from "@/lib/validators/register";
-import { getCurrentUser } from "@/app/actions/getCurrentUser";
 
 export async function POST(request: Request) {
   try {
-    const currentUser = await getCurrentUser();
-
-    if (!currentUser) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-
     const reqBody = await request.json();
 
     const { name, username, email, password } = registerSchema.parse(reqBody);
