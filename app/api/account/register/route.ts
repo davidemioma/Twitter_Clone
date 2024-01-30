@@ -25,6 +25,26 @@ export async function POST(request: Request) {
       return new NextResponse("Password is required", { status: 400 });
     }
 
+    const emailExists = await prismadb.user.findUnique({
+      where:{
+        email,
+      }
+    });
+
+    const usernameExists = await prismadb.user.findUnique({
+      where:{
+        username,
+      }
+    });
+
+    if (emailExists) {
+      return new NextResponse("Email already exists", { status: 400 });
+    }
+
+    if (usernameExists) {
+      return new NextResponse("Username already exists", { status: 400 });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await prismadb.user.create({
